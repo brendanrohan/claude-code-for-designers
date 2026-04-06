@@ -23,16 +23,16 @@ function isNightTime(current: Date, sunrise: Date, sunset: Date): boolean {
 // Illustrated backgrounds for each weather type
 function WeatherIllustration({ type, isNight }: { type: string; isNight: boolean }) {
   const bgColor = isNight ? "#1a2a2a" : "#2d3d3d";
-  const mountainColor1 = isNight ? "#0d1a1a" : "#1a2a2a";
-  const mountainColor2 = isNight ? "#152222" : "#243434";
-  const treeColor = isNight ? "#0a1414" : "#152222";
-  const waterColor = isNight ? "#0d1818" : "#1a2828";
+  const buildingColorFar = isNight ? "#1a2828" : "#2a3a3a";
+  const buildingColorMid = isNight ? "#142020" : "#1e2e2e";
+  const buildingColorNear = isNight ? "#0d1616" : "#152222";
+  const windowColor = isNight ? "#3a4a4a" : "#3d4d4d";
   const skyElement = isNight ? (
     // Moon
-    <circle cx="200" cy="80" r="25" fill="#c4c4b0" opacity="0.6" />
+    <circle cx="320" cy="70" r="25" fill="#c4c4b0" opacity="0.6" />
   ) : (
     // Sun
-    <circle cx="200" cy="80" r="30" fill="#e8e4d4" opacity="0.4" />
+    <circle cx="320" cy="70" r="30" fill="#e8e4d4" opacity="0.4" />
   );
 
   // Weather-specific elements
@@ -90,7 +90,7 @@ function WeatherIllustration({ type, isNight }: { type: string; isNight: boolean
       className="absolute inset-0 w-full h-full"
       preserveAspectRatio="xMidYMid slice"
     >
-      {/* Sky gradient */}
+      {/* Sky */}
       <rect width="400" height="400" fill={bgColor} />
 
       {/* Sun or Moon */}
@@ -99,44 +99,75 @@ function WeatherIllustration({ type, isNight }: { type: string; isNight: boolean
       {/* Weather overlay */}
       {weatherOverlay}
 
-      {/* Far mountains */}
-      <path
-        d="M0 280 L80 140 L120 180 L180 100 L220 150 L280 80 L340 160 L400 120 L400 400 L0 400 Z"
-        fill={mountainColor2}
-      />
-
-      {/* Near mountains */}
-      <path
-        d="M0 320 L60 220 L100 260 L160 180 L200 230 L260 160 L320 240 L380 200 L400 220 L400 400 L0 400 Z"
-        fill={mountainColor1}
-      />
-
-      {/* Trees left side */}
-      <g fill={treeColor}>
-        <path d="M20 400 L30 340 L40 400 Z" />
-        <path d="M50 400 L65 320 L80 400 Z" />
-        <path d="M35 400 L50 350 L65 400 Z" />
-        <path d="M70 400 L85 330 L100 400 Z" />
-        <path d="M90 400 L105 345 L120 400 Z" />
+      {/* Far buildings (background layer) */}
+      <g fill={buildingColorFar}>
+        <rect x="0" y="220" width="35" height="180" />
+        <rect x="40" y="180" width="25" height="220" />
+        <rect x="70" y="200" width="30" height="200" />
+        <rect x="105" y="160" width="20" height="240" />
+        <rect x="130" y="190" width="35" height="210" />
+        <rect x="170" y="140" width="25" height="260" />
+        <rect x="200" y="170" width="30" height="230" />
+        <rect x="235" y="150" width="22" height="250" />
+        <rect x="262" y="185" width="28" height="215" />
+        <rect x="295" y="165" width="35" height="235" />
+        <rect x="335" y="195" width="25" height="205" />
+        <rect x="365" y="175" width="35" height="225" />
       </g>
 
-      {/* Trees right side */}
-      <g fill={treeColor}>
-        <path d="M300 400 L315 330 L330 400 Z" />
-        <path d="M320 400 L340 310 L360 400 Z" />
-        <path d="M350 400 L365 340 L380 400 Z" />
-        <path d="M370 400 L385 350 L400 400 Z" />
+      {/* Mid buildings */}
+      <g fill={buildingColorMid}>
+        <rect x="-5" y="260" width="40" height="140" />
+        <rect x="45" y="230" width="30" height="170" />
+        <rect x="85" y="250" width="25" height="150" />
+        <rect x="120" y="210" width="35" height="190" />
+        <rect x="165" y="240" width="28" height="160" />
+        <rect x="200" y="220" width="32" height="180" />
+        <rect x="240" y="200" width="25" height="200" />
+        <rect x="275" y="235" width="30" height="165" />
+        <rect x="315" y="215" width="35" height="185" />
+        <rect x="360" y="245" width="45" height="155" />
       </g>
 
-      {/* Water */}
-      <rect x="0" y="360" width="400" height="40" fill={waterColor} />
-
-      {/* Water reflections */}
-      <g opacity="0.1">
-        <rect x="120" y="365" width="160" height="2" fill="#4a5a5a" />
-        <rect x="140" y="375" width="120" height="1" fill="#4a5a5a" />
-        <rect x="160" y="385" width="80" height="1" fill="#4a5a5a" />
+      {/* Near buildings (foreground) */}
+      <g fill={buildingColorNear}>
+        <rect x="-10" y="300" width="50" height="100" />
+        <rect x="50" y="280" width="35" height="120" />
+        <rect x="95" y="310" width="40" height="90" />
+        <rect x="145" y="270" width="30" height="130" />
+        <rect x="185" y="290" width="45" height="110" />
+        <rect x="240" y="260" width="35" height="140" />
+        <rect x="285" y="285" width="40" height="115" />
+        <rect x="335" y="275" width="30" height="125" />
+        <rect x="375" y="295" width="30" height="105" />
       </g>
+
+      {/* Window lights (only visible at night) */}
+      {isNight && (
+        <g fill={windowColor} opacity="0.6">
+          {/* Scattered lit windows */}
+          <rect x="52" y="235" width="4" height="5" />
+          <rect x="60" y="250" width="4" height="5" />
+          <rect x="125" y="220" width="4" height="5" />
+          <rect x="140" y="235" width="4" height="5" />
+          <rect x="172" y="250" width="4" height="5" />
+          <rect x="210" y="230" width="4" height="5" />
+          <rect x="245" y="210" width="4" height="5" />
+          <rect x="255" y="225" width="4" height="5" />
+          <rect x="285" y="245" width="4" height="5" />
+          <rect x="320" y="225" width="4" height="5" />
+          <rect x="340" y="240" width="4" height="5" />
+          <rect x="55" y="290" width="4" height="5" />
+          <rect x="155" y="285" width="4" height="5" />
+          <rect x="200" y="300" width="4" height="5" />
+          <rect x="250" y="275" width="4" height="5" />
+          <rect x="295" y="295" width="4" height="5" />
+          <rect x="345" y="285" width="4" height="5" />
+        </g>
+      )}
+
+      {/* Ground */}
+      <rect x="0" y="385" width="400" height="15" fill={buildingColorNear} />
     </svg>
   );
 }
